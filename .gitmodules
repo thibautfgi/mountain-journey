@@ -1,0 +1,6 @@
+[submodule "mj-front"]
+	path = mj-front
+	url = https://github.com/thibautfgi/mj-front.git
+[submodule "mj-moteur"]
+	path = mj-moteur
+	url = https://github.com/thibautfgi/mj-moteur.git
