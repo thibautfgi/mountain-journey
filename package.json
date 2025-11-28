@@ -1,0 +1,20 @@
+{
+  "name": "mountain-journey",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "front:install": "cd mj-front && npm install",
+    "front:start": "cd mj-front && npm start",
+    "front:build": "cd mj-front && npm run build",
+    "front:test": "cd mj-front&& npm test",
+    "moteur:install": "cd mj-moteur && mvn clean install",
+    "moteur:start": "cd mj-moteur && mvn spring-boot:run",
+    "moteur:test": "cd mj-moteur && mvn test",
+    "install": "npm run front:install && npm run moteur:install",
+    "dev": "concurrently \"npm run moteur:start\" \"npm run front:start\"",
+    "build": "npm run front:build && npm run moteur:install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
