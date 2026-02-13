@@ -13,7 +13,9 @@
     "install": "npm run front:install && npm run moteur:install",
     "dev": "concurrently \"npm run moteur:start\" \"npm run front:start\"",
     "build": "npm run front:build && npm run moteur:install",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "submodule:init": "git submodule update --init --recursive",
+    "submodule:update": "git submodule update --remote --merge"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
