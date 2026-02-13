@@ -1,0 +1,79 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build output
+build/
+dist/
+coverage/
+
+# Angular
+mj-front/.angular/cache/
+mj-front/.angular/*
+mj-front/.env*
+mj-front/.vscode/
+mj-front/.idea/
+mj-front/.DS_Store
+mj-front/.sass-cache/
+mj-front/.tmp/
+mj-front/tmp/
+mj-front/out-tsc/
+mj-front/.eslintcache
+mj-front/.cache/
+
+# Java/Maven
+mj-moteur/target/
+mj-moteur/.classpath
+mj-moteur/.project
+mj-moteur/.settings/
+mj-moteur/.idea/
+mj-moteur/.vscode/
+mj-moteur/.DS_Store
+mj-moteur/.env*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# Misc
+*.swp
+*.swo
+*.bak
+*.tmp
+*.temp
+
+# Images/Assets cache
+**/.cache/
+
+# Prettier
+.prettierignore
+
+# Env
+.env
+.env.*
+
+# JetBrains
+*.ipr
+*.iws
+*.sln
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Others
+mj-front/public/assets/gpx/
+
