@@ -12,9 +12,11 @@
     "moteur:test": "cd mj-moteur && mvn test",
     "install": "npm run front:install && npm run moteur:install",
     "dev": "concurrently \"npm run moteur:start\" \"npm run front:start\"",
-    "build": "npm run front:build && npm run moteur:install"
+    "build": "npm run front:build && npm run moteur:install",
+    "prettier": "prettier --write ."
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "prettier": "^3.8.1"
   }
 }

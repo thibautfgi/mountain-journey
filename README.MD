@@ -13,4 +13,3 @@ of Mapbox for create the map.
 This is a project free of right. You can use it has you wish if you integre my names. Thanks for your reading.
 
 Figueira Thibaut.
-
