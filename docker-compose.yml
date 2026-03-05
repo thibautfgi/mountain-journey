@@ -11,6 +11,7 @@ services:
       - "3307:3306"
     volumes:
       - mj-db-data:/var/lib/mysql
+      - ./mj-moteur/src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - mj-network
     healthcheck:
@@ -59,6 +60,8 @@ services:
     depends_on:
       mj-db:
         condition: service_healthy
+      mj-moteur:
+        condition: service_started
     networks:
       - mj-network
 
