@@ -6,6 +6,8 @@ on:
   pull_request:
     branches:
       - recette   # cible : la PR doit viser la branche recette
+    from:
+        - develop   # source : la PR doit provenir de la branche develop
 
 # Donne les droits d'écriture au GITHUB_TOKEN pour pouvoir pusher
 permissions:
