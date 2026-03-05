@@ -1,0 +1,70 @@
+services:
+
+  mj-db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mountain_journey
+      MYSQL_USER: mj_user
+      MYSQL_PASSWORD: mj_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - mj-db-data:/var/lib/mysql
+    networks:
+      - mj-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mj-front:
+    build:
+      context: ./mj-front
+    ports:
+      - "4200:80"
+    depends_on:
+      - mj-moteur
+      - mj-auth
+    networks:
+      - mj-network
+
+  mj-moteur:
+    build:
+      context: ./mj-moteur
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mj-db:3306/mountain_journey
+      - SPRING_DATASOURCE_USERNAME=mj_user
+      - SPRING_DATASOURCE_PASSWORD=mj_password
+    depends_on:
+      mj-db:
+        condition: service_healthy
+    networks:
+      - mj-network
+
+  mj-auth:
+    build:
+      context: ./mj-auth
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mj-db:3306/mountain_journey
+      - SPRING_DATASOURCE_USERNAME=mj_user
+      - SPRING_DATASOURCE_PASSWORD=mj_password
+    depends_on:
+      mj-db:
+        condition: service_healthy
+    networks:
+      - mj-network
+
+volumes:
+  mj-db-data:
+
+networks:
+  mj-network:
+    driver: bridge
