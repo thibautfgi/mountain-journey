@@ -1,11 +1,11 @@
-# Pipeline de déploiement vers la branche recette
-# Se déclenche uniquement sur la branche develop après que tous les tests passent
+# Pipeline CI — tests des trois modules
+# Se déclenche uniquement quand une Pull Request develop → recette est ouverte ou mise à jour
 name: Deploy to Recette
 
 on:
-  push:
+  pull_request:
     branches:
-      - develop
+      - recette   # cible : la PR doit viser la branche recette
 
 jobs:
   # ─────────────────────────────────────────────
@@ -85,14 +85,22 @@ jobs:
 
   # ─────────────────────────────────────────────
   # 4. Merge develop → recette (si tout est vert)
+  # Lance le merge UNIQUEMENT si les 3 jobs CI
+  # précédents se sont terminés avec succès.
   # ─────────────────────────────────────────────
   deploy-to-recette:
     name: 🚀 Merge develop → recette
     runs-on: ubuntu-latest
+    # Attend que les 3 jobs de tests soient tous verts
     needs:
       - test-auth
       - test-moteur
       - test-front
+    # Bloque le merge si l'un des jobs est en échec ou annulé
+    if: >
+      needs.test-auth.result   == 'success' &&
+      needs.test-moteur.result == 'success' &&
+      needs.test-front.result  == 'success'
 
     steps:
       - name: Checkout du dépôt complet
@@ -111,6 +119,6 @@ jobs:
         run: |
           git fetch origin
           git checkout recette
-          git merge --no-ff origin/develop -m "chore: merge develop → recette [auto]"
+          git merge --no-ff origin/${{ github.head_ref }} -m "chore: merge ${{ github.head_ref }} → recette [auto]"
           git push origin recette
 
