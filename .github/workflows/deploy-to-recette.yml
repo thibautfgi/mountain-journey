@@ -7,6 +7,10 @@ on:
     branches:
       - recette   # cible : la PR doit viser la branche recette
 
+# Donne les droits d'écriture au GITHUB_TOKEN pour pouvoir pusher
+permissions:
+  contents: write
+
 jobs:
   # ─────────────────────────────────────────────
   # 1. Tests mj-auth (Spring Boot / Maven)
@@ -108,7 +112,7 @@ jobs:
         with:
           submodules: true
           fetch-depth: 0          # historique complet nécessaire pour le merge
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }}
 
       - name: Configurer Git
         run: |
@@ -120,5 +124,6 @@ jobs:
           git fetch origin
           git checkout recette
           git merge --no-ff origin/${{ github.head_ref }} -m "chore: merge ${{ github.head_ref }} → recette [auto]"
+          git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}
           git push origin recette
 
