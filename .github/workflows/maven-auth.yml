@@ -1,0 +1,27 @@
+# YAML
+name: Java CI tests
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mj-auth
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          cache: maven
+      - name: Run tests
+        run: mvn -B verify --file pom.xml
