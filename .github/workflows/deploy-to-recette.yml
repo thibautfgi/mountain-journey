@@ -1,0 +1,124 @@
+# Pipeline CI — tests des trois modules
+# Se déclenche uniquement quand une Pull Request develop → recette est ouverte ou mise à jour
+name: Deploy to Recette
+
+on:
+  pull_request:
+    branches:
+      - recette   # cible : la PR doit viser la branche recette
+
+jobs:
+  # ─────────────────────────────────────────────
+  # 1. Tests mj-auth (Spring Boot / Maven)
+  # ─────────────────────────────────────────────
+  test-auth:
+    name: 🧪 Tests mj-auth
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mj-auth
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          cache: maven
+
+      - name: Run tests mj-auth
+        run: mvn -B verify --file pom.xml
+
+  # ─────────────────────────────────────────────
+  # 2. Tests mj-moteur (Spring Boot / Maven)
+  # ─────────────────────────────────────────────
+  test-moteur:
+    name: 🧪 Tests mj-moteur
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mj-moteur
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          cache: maven
+
+      - name: Run tests mj-moteur
+        run: mvn -B verify --file pom.xml
+
+  # ─────────────────────────────────────────────
+  # 3. Build & lint mj-front (Angular / Node.js)
+  # ─────────────────────────────────────────────
+  test-front:
+    name: 🧪 Build & lint mj-front
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mj-front
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Use Node.js 22.12
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.12"
+          cache: "npm"
+          cache-dependency-path: mj-front/package-lock.json
+
+      - run: npm ci
+      - name: Lint code
+        run: npm run lint
+      - name: Build
+        run: npm run build --if-present
+
+  # ─────────────────────────────────────────────
+  # 4. Merge develop → recette (si tout est vert)
+  # Lance le merge UNIQUEMENT si les 3 jobs CI
+  # précédents se sont terminés avec succès.
+  # ─────────────────────────────────────────────
+  deploy-to-recette:
+    name: 🚀 Merge develop → recette
+    runs-on: ubuntu-latest
+    # Attend que les 3 jobs de tests soient tous verts
+    needs:
+      - test-auth
+      - test-moteur
+      - test-front
+    # Bloque le merge si l'un des jobs est en échec ou annulé
+    if: >
+      needs.test-auth.result   == 'success' &&
+      needs.test-moteur.result == 'success' &&
+      needs.test-front.result  == 'success'
+
+    steps:
+      - name: Checkout du dépôt complet
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0          # historique complet nécessaire pour le merge
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configurer Git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge develop → recette
+        run: |
+          git fetch origin
+          git checkout recette
+          git merge --no-ff origin/${{ github.head_ref }} -m "chore: merge ${{ github.head_ref }} → recette [auto]"
+          git push origin recette
+
