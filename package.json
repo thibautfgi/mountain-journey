@@ -13,7 +13,7 @@
     "auth:start": "cd mj-auth && mvn spring-boot:run",
     "auth:test": "cd mj-auth && mvn test",
     "moteur:test": "cd mj-moteur && mvn test",
-    "install": "npm run front:install && npm run moteur:install && npm run:auth:install",
+    "install": "npm run front:install && npm run moteur:install && npm run auth:install",
     "dev": "concurrently \"npm run moteur:start\" \"npm run front:start\"",
     "build": "npm run front:build && npm run moteur:install",
     "prettier": "prettier --write .",
