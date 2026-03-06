@@ -1,0 +1,85 @@
+databases:
+
+  # ─── Base de données PostgreSQL managée Render ──────────
+  - name: mj-db
+    plan: free
+    databaseName: mountain_journey
+    user: mj_user
+
+services:
+
+  # ─── Backend Auth ───────────────────────────────────────
+  - type: web
+    name: mj-auth
+    runtime: docker
+    rootDir: .
+    dockerfilePath: mj-auth/Dockerfile
+    plan: free
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: mj-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: mj-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: mj-db
+          property: password
+      - key: JWT_SECRET
+        sync: false   # ⚠️ À définir manuellement dans le dashboard Render
+
+  # ─── Backend Moteur ─────────────────────────────────────
+  - type: web
+    name: mj-moteur
+    runtime: docker
+    rootDir: .
+    dockerfilePath: mj-moteur/Dockerfile
+    plan: free
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: mj-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: mj-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: mj-db
+          property: password
+      - key: JWT_SECRET
+        sync: false   # ⚠️ Même secret que mj-auth — à définir manuellement
+      - key: MJ_AUTH_URL
+        fromService:
+          name: mj-auth
+          type: web
+          property: host
+
+  # ─── Frontend Angular ────────────────────────────────────
+  - type: web
+    name: mj-front
+    runtime: docker
+    rootDir: .
+    dockerfilePath: mj-front/Dockerfile
+    plan: free
+    envVars:
+      - key: MJ_AUTH_API_URL
+        fromService:
+          name: mj-auth
+          type: web
+          property: hostWithScheme   # donne https://mj-auth.onrender.com
+      - key: MJ_MOTEUR_API_URL
+        fromService:
+          name: mj-moteur
+          type: web
+          property: hostWithScheme   # donne https://mj-moteur.onrender.com
+      - key: MAPBOX_TOKEN_PUBLIC
+        sync: false   # ⚠️ À définir manuellement dans le dashboard Render

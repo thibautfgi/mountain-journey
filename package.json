@@ -14,14 +14,14 @@
     "auth:test": "cd mj-auth && mvn test",
     "moteur:test": "cd mj-moteur && mvn test",
     "install": "npm run front:install && npm run moteur:install && npm run auth:install",
-    "dev": "concurrently \"npm run moteur:start\" \"npm run front:start\"",
+    "start": "concurrently \"npm run moteur:start\" \"npm run auth:start\" \"npm run front:start\"",
     "build": "npm run front:build && npm run moteur:install",
     "prettier": "prettier --write .",
     "submodule:init": "git submodule update --init --recursive",
     "submodule:update": "git submodule update --remote --merge",
     "docker:build": "docker compose build",
     "docker:up": "docker compose up -d",
-    "docker:down": "docker compose down",
+    "docker:down": "docker compose down -v",
     "docker:logs": "docker compose logs -f"
   },
   "devDependencies": {
