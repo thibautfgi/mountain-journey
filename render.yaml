@@ -12,8 +12,8 @@ services:
   - type: web
     name: mj-auth
     runtime: docker
-    rootDir: .
-    dockerfilePath: mj-auth/Dockerfile
+    rootDir: mj-auth
+    dockerfilePath: ./Dockerfile
     plan: free
     envVars:
       - key: SPRING_PROFILES_ACTIVE
@@ -37,8 +37,8 @@ services:
   - type: web
     name: mj-moteur
     runtime: docker
-    rootDir: .
-    dockerfilePath: mj-moteur/Dockerfile
+    rootDir: mj-moteur
+    dockerfilePath: ./Dockerfile
     plan: free
     envVars:
       - key: SPRING_PROFILES_ACTIVE
@@ -67,8 +67,8 @@ services:
   - type: web
     name: mj-front
     runtime: docker
-    rootDir: .
-    dockerfilePath: mj-front/Dockerfile
+    rootDir: mj-front
+    dockerfilePath: ./Dockerfile
     plan: free
     envVars:
       - key: MJ_AUTH_API_URL
