@@ -1,0 +1,26 @@
+name: Deploy to Render (recette)
+
+on:
+  push:
+    branches:
+      - recette
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Trigger mj-auth
+        run: |
+          curl -s -o /dev/null -w "%{http_code}" \
+            -X POST "${{ secrets.RENDER_HOOK_AUTH }}"
+
+      - name: Trigger mj-moteur
+        run: |
+          curl -s -o /dev/null -w "%{http_code}" \
+            -X POST "${{ secrets.RENDER_HOOK_MOTEUR }}"
+
+      - name: Trigger mj-front
+        run: |
+          curl -s -o /dev/null -w "%{http_code}" \
+            -X POST "${{ secrets.RENDER_HOOK_FRONT }}"
