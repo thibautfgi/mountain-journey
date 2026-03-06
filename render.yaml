@@ -75,11 +75,11 @@ services:
         fromService:
           name: mj-auth
           type: web
-          property: host   # donne mj-auth.onrender.com (sans https://)
+          property: host
       - key: MJ_MOTEUR_API_URL
         fromService:
           name: mj-moteur
           type: web
-          property: host   # donne mj-moteur.onrender.com (sans https://)
+          property: host
       - key: MAPBOX_TOKEN_PUBLIC
         sync: false   # ⚠️ À définir manuellement dans le dashboard Render
