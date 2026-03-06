@@ -18,9 +18,9 @@ jobs:
       - name: Trigger mj-moteur
         run: |
           curl -s -o /dev/null -w "%{http_code}" \
-            -X POST "${{ secrets.RENDER_HOOK_MOTEUR }}"
+            -X POST "${{ secrets.RENDER_HOOK_MO }}"
 
       - name: Trigger mj-front
         run: |
           curl -s -o /dev/null -w "%{http_code}" \
-            -X POST "${{ secrets.RENDER_HOOK_FRONT }}"
+            -X POST "${{ secrets.RENDER_HOOK_FO }}"
