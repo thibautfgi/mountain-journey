@@ -5,7 +5,11 @@ import "../libs/shim/expect.js";
 import "../libs/shim/urijs.js";
 import { group } from "k6";
 
-export let options = { maxRedirects: 4 };
+export const options = {
+  maxRedirects: 4,
+  vus: 10,
+  duration: "30s"
+};
 
 const Request = Symbol.for("request");
 postman[Symbol.for("initial")]({
@@ -18,7 +22,10 @@ postman[Symbol.for("initial")]({
 
 export default function() {
   // Génère un email unique à chaque exécution
-  const uniqueEmail = `arthur.fabiens+${Date.now()}@hotmail.com`;
+  const uniqueEmail = `arthur.fabiens+${__VU}-${__ITER}-${Date.now()}@hotmail.com`;
+
+
+
   group("Auth", function() {
     postman[Request]({
       name: "Register",
