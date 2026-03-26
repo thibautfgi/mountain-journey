@@ -11,6 +11,7 @@ pnpm-lock.yaml
 build/
 dist/
 coverage/
+k6/out/
 
 # Angular
 mj-front/.angular/cache/

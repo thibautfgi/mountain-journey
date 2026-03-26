@@ -66,6 +66,18 @@ services:
     networks:
       - mj-network
 
+  k6:
+    image: grafana/k6:latest
+    depends_on:
+      - mj-auth
+      - mj-moteur
+    networks:
+      - mj-network
+    working_dir: /scripts
+    volumes:
+      - ./k6:/scripts
+      - ./libs:/libs
+
 volumes:
   mj-db-data:
 
