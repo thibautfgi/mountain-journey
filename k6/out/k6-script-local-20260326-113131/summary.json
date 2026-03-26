@@ -1,0 +1,168 @@
+{
+    "root_group": {
+        "id": "d41d8cd98f00b204e9800998ecf8427e",
+        "groups": {
+            "Auth": {
+                "name": "Auth",
+                "path": "::Auth",
+                "id": "cf0adeacc82d76681a82bd94786553f2",
+                "groups": {},
+                "checks": {
+                        "Status 200": {
+                            "name": "Status 200",
+                            "path": "::Auth::Status 200",
+                            "id": "f68f63ac2cc6fa3567413c91051ed3e4",
+                            "passes": 2,
+                            "fails": 0
+                        },
+                        "Token présent": {
+                            "fails": 0,
+                            "name": "Token présent",
+                            "path": "::Auth::Token présent",
+                            "id": "18a94124ae118bc6a3ff754f11dcf050",
+                            "passes": 2
+                        },
+                        "Email correct": {
+                            "name": "Email correct",
+                            "path": "::Auth::Email correct",
+                            "id": "e7e9040d302f5e70b9c696634ce58ee4",
+                            "passes": 1,
+                            "fails": 0
+                        },
+                        "Status 4xx": {
+                            "path": "::Auth::Status 4xx",
+                            "id": "62b3a2ddaba1bdb80a1516f80c3eb2e5",
+                            "passes": 3,
+                            "fails": 0,
+                            "name": "Status 4xx"
+                        },
+                        "Non 401/403": {
+                            "name": "Non 401/403",
+                            "path": "::Auth::Non 401/403",
+                            "id": "5eb5fcc1f1a258db5ab997f4415f6e24",
+                            "passes": 1,
+                            "fails": 0
+                        },
+                        "Status 401 ou 403": {
+                            "name": "Status 401 ou 403",
+                            "path": "::Auth::Status 401 ou 403",
+                            "id": "a20eced0b62e4e6c8ca68129fbbfe8ac",
+                            "passes": 1,
+                            "fails": 0
+                        }
+                    }
+            }
+        },
+        "checks": {},
+        "name": "",
+        "path": ""
+    },
+    "metrics": {
+        "data_received": {
+            "count": 2866,
+            "rate": 11954.795522733028
+        },
+        "http_req_connecting": {
+            "avg": 0.04312714285714286,
+            "min": 0,
+            "med": 0,
+            "max": 0.30189,
+            "p(90)": 0.1207560000000001,
+            "p(95)": 0.2113229999999998
+        },
+        "http_req_waiting": {
+            "p(90)": 67.2462842,
+            "p(95)": 69.5470871,
+            "avg": 32.36927514285714,
+            "min": 1.592563,
+            "med": 13.77417,
+            "max": 71.84789
+        },
+        "http_req_tls_handshaking": {
+            "min": 0,
+            "med": 0,
+            "max": 0,
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 0
+        },
+        "http_req_sending": {
+            "avg": 0.05011871428571429,
+            "min": 0.032559,
+            "med": 0.046284,
+            "max": 0.076054,
+            "p(90)": 0.06890500000000001,
+            "p(95)": 0.07247949999999999
+        },
+        "iterations": {
+            "rate": 4.171247565503499,
+            "count": 1
+        },
+        "http_req_duration": {
+            "med": 13.912421,
+            "max": 72.416433,
+            "p(90)": 67.5465126,
+            "p(95)": 69.98147279999999,
+            "avg": 32.765507142857146,
+            "min": 1.690816
+        },
+        "http_reqs": {
+            "count": 7,
+            "rate": 29.19873295852449
+        },
+        "http_req_duration{expected_response:true}": {
+            "avg": 46.709075000000006,
+            "min": 4.537055,
+            "med": 63.173737,
+            "max": 72.416433,
+            "p(90)": 70.5678938,
+            "p(95)": 71.4921634
+        },
+        "iteration_duration": {
+            "p(95)": 239.634525,
+            "avg": 239.634525,
+            "min": 239.634525,
+            "med": 239.634525,
+            "max": 239.634525,
+            "p(90)": 239.634525
+        },
+        "checks": {
+            "passes": 10,
+            "fails": 0,
+            "value": 1
+        },
+        "http_req_blocked": {
+            "avg": 0.2087557142857143,
+            "min": 0.004056,
+            "med": 0.006379,
+            "max": 1.424695,
+            "p(90)": 0.5762248000000005,
+            "p(95)": 1.0004598999999992
+        },
+        "http_req_receiving": {
+            "max": 1.403244,
+            "p(90)": 0.8639400000000003,
+            "p(95)": 1.1335919999999993,
+            "avg": 0.3461132857142856,
+            "min": 0.054459,
+            "med": 0.124891
+        },
+        "group_duration": {
+            "avg": 239.534483,
+            "min": 239.534483,
+            "med": 239.534483,
+            "max": 239.534483,
+            "p(90)": 239.534483,
+            "p(95)": 239.534483
+        },
+        "http_req_failed": {
+            "passes": 4,
+            "fails": 3,
+            "value": 0.5714285714285714
+        },
+        "data_sent": {
+            "count": 1725,
+            "rate": 7195.402050493536
+        }
+    }
+}
