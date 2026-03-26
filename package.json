@@ -22,9 +22,12 @@
     "docker:build": "docker compose build",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down -v",
-    "docker:logs": "docker compose logs -f"
+    "docker:logs": "docker compose logs -f",
+    "k6:local": "node k6/run-k6.js local",
+    "k6:prod": "node k6/run-k6.js prod"
   },
   "devDependencies": {
+    "@apideck/postman-to-k6": "^1.14.1",
     "concurrently": "^8.2.2",
     "prettier": "^3.8.1"
   }
