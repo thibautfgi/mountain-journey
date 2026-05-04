@@ -1,315 +1,172 @@
 {
   "info": {
-    "_postman_id": "0d3402d6-10f4-42e5-b6d1-5b23e46c981a",
-    "name": "MJ Auth API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "32024034",
-    "_collection_link": "https://go.postman.co/collection/32024034-0d3402d6-10f4-42e5-b6d1-5b23e46c981a?source=collection_link"
+    "name": "MJ Auth API ",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8081" },
+    { "key": "token", "value": "" }
+  ],
   "item": [
     {
       "name": "Auth",
       "item": [
         {
           "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userFirstName\": \"Jean\",\n  \"userLastName\": \"Dupont\",\n  \"userPhone\": \"0612345678\",\n  \"userEmail\": \"jean.dupont@test.com\",\n  \"userPassword\": \"Password123!\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/register"
+          },
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
+                  "console.log('Réponse register:', pm.response.text());",
                   "pm.test('Status 200', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
-                  "pm.test('Token présent', () => pm.expect(json.token).to.be.a('string'));",
-                  "pm.environment.Local.set('token', json.token);"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                  "pm.test('Token présent', () => pm.expect(json.userToken).to.be.a('string'));",
+                  "if (json.userToken) { pm.environment.set('token', json.userToken); } else { pm.environment.unset('token'); }"
+                ]
               }
             }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"firstName\": \"tibo\",\n  \"lastName\": \"f\",\n  \"phone\": \"0612345678\",\n  \"email\": \"thibaut.fgi@hotmail.com\",\n  \"password\": \"Azerty123\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/register",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "register"
-              ]
-            }
-          },
-          "response": []
+          ]
         },
         {
           "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userEmail\": \"jean.dupont@test.com\",\n  \"userPassword\": \"Password123!\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          },
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
+                  "console.log('Réponse login:', pm.response.text());",
                   "pm.test('Status 200', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
-                  "pm.test('Token présent', () => pm.expect(json.token).to.be.a('string'));",
-                  "pm.test('Email correct', () => pm.expect(json.email).to.eql('jean.dupont@test.com'));",
-                  "pm.environment.set('token', json.token);"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                  "pm.test('Token présent', () => pm.expect(json.userToken).to.be.a('string'));",
+                  "pm.test('Email correct', () => pm.expect(json.userEmail).to.eql('jean.dupont@test.com'));",
+                  "if (json.userToken) { pm.environment.set('token', json.userToken); } else { pm.environment.unset('token'); }"
+                ]
               }
             }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"email\": \"thibaut.fgi@hotmail.com\",\n  \"password\": \"Azerty123\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/login",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "login"
-              ]
-            }
-          },
-          "response": []
+          ]
         },
         {
           "name": "Login - Mauvais mot de passe",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userEmail\": \"jean.dupont@test.com\",\n  \"userPassword\": \"mauvaismdp\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          },
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
                   "pm.test('Status 4xx', () => pm.expect(pm.response.code).to.be.oneOf([400, 401, 403, 500]));"
-                ],
-                "type": "text/javascript"
+                ]
               }
             }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"email\": \"jean.dupont@test.com\",\n  \"password\": \"mauvaismdp\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/login",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "login"
-              ]
-            }
-          },
-          "response": []
+          ]
         },
         {
           "name": "Login - Email inexistant",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userEmail\": \"inconnu@test.com\",\n  \"userPassword\": \"Password123!\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          },
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
                   "pm.test('Status 4xx', () => pm.expect(pm.response.code).to.be.oneOf([400, 401, 403, 500]));"
-                ],
-                "type": "text/javascript"
+                ]
               }
             }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"email\": \"inconnu@test.com\",\n  \"password\": \"Password123!\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/login",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "login"
-              ]
-            }
-          },
-          "response": []
+          ]
         },
         {
           "name": "Register - Email déjà utilisé",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userFirstName\": \"Jean\",\n  \"userLastName\": \"Dupont\",\n  \"userPhone\": \"0612345678\",\n  \"userEmail\": \"jean.dupont@test.com\",\n  \"userPassword\": \"Password123!\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/register"
+          },
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
                   "pm.test('Status 4xx', () => pm.expect(pm.response.code).to.be.oneOf([400, 401, 403, 500]));"
-                ],
-                "type": "text/javascript"
+                ]
               }
             }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"firstName\": \"Jean\",\n  \"lastName\": \"Dupont\",\n  \"phone\": \"0612345678\",\n  \"email\": \"jean.dupont@test.com\",\n  \"password\": \"Password123!\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/register",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "register"
-              ]
-            }
-          },
-          "response": []
+          ]
         },
         {
           "name": "Route protégée - Avec token",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+            "url": "{{baseUrl}}/api/test/protected"
+          },
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
                   "pm.test('Non 401/403', () => pm.expect(pm.response.code).to.not.be.oneOf([401, 403]));"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                ]
               }
             }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/test/protected",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "test",
-                "protected"
-              ]
-            }
-          },
-          "response": []
+          ]
         },
         {
           "name": "Route protégée - Sans token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/test/protected"
+          },
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
                   "pm.test('Status 401 ou 403', () => pm.expect(pm.response.code).to.be.oneOf([401, 403]));"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                ]
               }
             }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/test/protected",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "test",
-                "protected"
-              ]
-            }
-          },
-          "response": []
+          ]
         }
       ]
-    }
-  ],
-  "event": [
-    {
-      "listen": "prerequest",
-      "script": {
-        "type": "text/javascript",
-        "packages": {},
-        "requests": {},
-        "exec": [
-          ""
-        ]
-      }
-    },
-    {
-      "listen": "test",
-      "script": {
-        "type": "text/javascript",
-        "packages": {},
-        "requests": {},
-        "exec": [
-          ""
-        ]
-      }
     }
   ]
 }
