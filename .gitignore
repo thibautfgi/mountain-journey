@@ -26,7 +26,8 @@ mj-front/tmp/
 mj-front/out-tsc/
 mj-front/.eslintcache
 mj-front/.cache/
-mj-front/environments/
+mj-front/environments/environment.ts
+mj-front/environments/environment.prod.ts
 
 # Java/Maven
 mj-moteur/target/
