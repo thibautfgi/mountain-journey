@@ -131,6 +131,47 @@
           ]
         },
         {
+          "name": "Who I Am - Avec token",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+            "url": "{{baseUrl}}/api/auth/whoiam"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.test('Email présent', () => pm.expect(json.userEmail).to.be.a('string'));",
+                  "pm.test('Prénom présent', () => pm.expect(json.userFirstName).to.be.a('string'));",
+                  "pm.test('Nom présent', () => pm.expect(json.userLastName).to.be.a('string'));",
+                  "pm.test('Pas de token dans la réponse', () => pm.expect(json.userToken).to.be.undefined);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Who I Am - Sans token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/auth/whoiam"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 401 ou 403', () => pm.expect(pm.response.code).to.be.oneOf([401, 403]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
           "name": "Route protégée - Avec token",
           "request": {
             "method": "GET",
