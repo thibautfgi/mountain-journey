@@ -411,7 +411,7 @@ export const authGuard: CanActivateFn = () => {
 // app.routes.ts
 import { Routes } from '@angular/router';
 import { HomeComponent } from './components/page/home/home.component';
-import { ConnectionComponent } from './components/page/connection/connection.component';
+import { LoginComponent } from './components/page/connection/connection.component';
 import { NotFoundComponent } from './components/page/not-found/not-found.component';
 import { MapsComponent } from './components/page/maps/maps.component';
 import { authGuard } from './core/guards/auth.guard'; // ✅ AJOUT
@@ -430,7 +430,7 @@ export const routes: Routes = [
   {
     // ✅ PUBLIC — page de connexion/inscription
     path: 'login',
-    component: ConnectionComponent
+    component: LoginComponent
   },
   {
     // ✅ PROTÉGÉ — nécessite un token JWT valide
@@ -535,10 +535,10 @@ export class AuthService {
 
 ---
 
-### 4.6 Fix `connection.component.ts` — Supprimer les `alert()`
+### 4.6 Fix `login.component.ts` — Supprimer les `alert()`
 
 ```typescript
-// connection.component.ts — onSubmit() amélioré
+// login.component.ts — onSubmit() amélioré
 errorMessage = signal<string>('');
 successMessage = signal<string>('');
 
@@ -568,7 +568,7 @@ onSubmit() {
 ```
 
 ```html
-<!-- Dans connection.component.html, ajouter : -->
+<!-- Dans login.component.html, ajouter : -->
 @if (errorMessage()) {
   <div class="error-banner">{{ errorMessage() }}</div>
 }
